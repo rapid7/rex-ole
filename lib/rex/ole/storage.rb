@@ -126,7 +126,7 @@ class Storage
     stm = Stream.new self
     stm.name = name
     parent_stg ||= @directory
-    dlog("Adding stream #{name} to storage #{parent_stg.name}", 'rex', LEV_3)
+    # Adding stream 'name' to storage parent_stg...
     @directory.link_item(parent_stg, stm)
     @modified = true
     stm
@@ -150,7 +150,7 @@ class Storage
     stg = SubStorage.new self
     stg.name = name
     parent_stg ||= @directory
-    dlog("Adding storage #{name} to storage #{parent_stg.name}", 'rex', LEV_3)
+    # Adding storage 'name' to storage parent_stg...
     @directory.link_item(parent_stg, stg)
     stg
   end
@@ -209,7 +209,7 @@ class Storage
   end
 
   def write_sector_raw(sect, sbuf)
-    dlog("Writing sector 0x%02x" % sect, 'rex', LEV_3)
+    # Writing sector 'sect'...
     @fd.seek((sect + 1) * @header.sector_size, ::IO::SEEK_SET)
     @fd.write(sbuf)
   end
@@ -236,7 +236,7 @@ class Storage
   end
 
   def write_mini_sector_raw(sect, sbuf)
-    dlog("Writing mini sector 0x%02x" % sect, 'rex', LEV_3)
+    # Writing mini sector 'sect'...
     @ministream << sbuf
   end
 
@@ -257,7 +257,7 @@ class Storage
   end
 
   def write_stream(stm)
-    dlog("Writing \"%s\" to regular stream" % stm.name, 'rex', LEV_3)
+    # Writing 'stm.name' to regular stream...
     stm_start = nil
     prev_sect = nil
     stm.seek(0)
@@ -270,7 +270,7 @@ class Storage
   end
 
   def write_mini_stream(stm)
-    dlog("Writing \"%s\" to mini stream" % stm.name, 'rex', LEV_3)
+    # Writing 'stm.name' to mini stream...
     prev_sect = nil
     stm.seek(0)
     while (sbuf = stm.read(@header.mini_sector_size))
@@ -306,7 +306,7 @@ class Storage
       block = left if (block > left)
 
       # read it.
-      dlog("read_data - reading 0x%x bytes" % block, 'rex', LEV_3)
+      # Reading 'block' number of bytes...
       buf = read_sector(sect, block)
       ret << buf
       left -= buf.length
@@ -335,7 +335,7 @@ class Storage
       block = left if (block > left)
 
       # read it.
-      dlog("read_data_mini - reading 0x%x bytes" % block, 'rex', LEV_3)
+      # Reading 'block' number of bytes...
       buf = read_mini_sector(sect, block)
       ret << buf
       left -= buf.length
@@ -373,9 +373,9 @@ class Storage
 
 
   def read_mini_sector(sect, len)
-    dlog("Reading mini sector 0x%x" % sect, 'rex', LEV_3)
+    # Reading mini sector 'sect'...
     off = (@header.mini_sector_size * sect)
-    dlog("Reading from offset 0x%x of ministream" % off, 'rex', LEV_3)
+    # Reading from offset 'off' of ministream...
     @ministream.seek(off)
     data = @ministream.read(len)
     data

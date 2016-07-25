@@ -51,20 +51,20 @@ class Directory < DirEntry
     # link item to siblings and/or parent
     if (parent._sidChild == DIR_NOSTREAM)
       parent._sidChild = child.sid
-      dlog("Linking #{child.name} as THE child of #{parent.name} as sid #{child.sid}", 'rex', LEV_3)
+      # Linking 'child' as THE child of 'parent', sid is child.sid...
     else
       sib = nil
       parent.each { |el|
         if (el._sidLeftSib == DIR_NOSTREAM)
           sib = el
           el._sidLeftSib = child.sid
-          dlog("Linking #{child.name} as the LEFT sibling of #{sib.name} as sid #{child.sid}", 'rex', LEV_3)
+          # Linking 'child' as the LEFT sibling of 'sib', sid is child.sid...
           break
         end
         if (el._sidRightSib == DIR_NOSTREAM)
           sib = el
           el._sidRightSib = child.sid
-          dlog("Linking #{child.name} as the RIGHT sibling of #{sib.name} as sid #{child.sid}", 'rex', LEV_3)
+          # Linking 'child' as the RIGHT sibling of 'sib', sid is child.sid...
           break
         end
       }
@@ -152,7 +152,6 @@ class Directory < DirEntry
   # recursively add entries to their proper parents :)
   def populate_children(entries, parent, sid)
     node = entries[sid]
-    dlog("populate_children(entries, \"#{parent.name}\", #{sid}) - node: #{node.name}", 'rex', LEV_3)
     parent << node
     if (node.type == STGTY_STORAGE) and (node._sidChild != DIR_NOSTREAM)
       populate_children(entries, node, node._sidChild)
@@ -178,7 +177,6 @@ class Directory < DirEntry
     # flatten the directory again
     entries = []
     flatten_tree(entries, self)
-    dlog("flattened tree has #{entries.length} entries...", 'rex', LEV_3)
 
     # count directory sectors
     ds_count = entries.length / 4
@@ -198,7 +196,7 @@ class Directory < DirEntry
       next if (de.type == STGTY_ROOT)
 
       dir = de.pack
-      dlog("writing dir entry #{de.name}", 'rex', LEV_3)
+      # Writing dir entry de...
       sbuf << dir
 
       if (sbuf.length == @stg.header.sector_size)
