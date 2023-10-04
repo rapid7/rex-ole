@@ -1,0 +1,16 @@
+---
+info:
+  title: Rex Ole
+  description: Rex Library for reading/writing Object-Linking-and-Embedding (OLE)
+    files and streams
+  x-cortex-git:
+    github:
+      alias: r7org
+      repository: rapid7/rex-ole
+  x-cortex-tag: rex-ole
+  x-cortex-type: service
+  x-cortex-domain-parents:
+  - tag: metasploit
+openapi: 3.0.1
+servers:
+- url: "/"
